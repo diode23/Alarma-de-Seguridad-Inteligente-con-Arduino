@@ -1,0 +1,58 @@
+// Alarma de Seguridad Inteligente con Arduino
+
+// Funcion para inicializar los pines de entrada y salida
+void inicializarPines() {
+  // Pin 13 como salida para la sirena
+  pinMode(13, OUTPUT);
+  // Pines 2-9 como entradas para los sensores de movimiento
+  for (int i = 2; i <= 9; i++) {
+    pinMode(i, INPUT);
+  }
+}
+
+// Funcion para revisar el estado de los sensores de movimiento
+void revisarSensores() {
+  // Variable para almacenar el estado de la alarma
+  boolean alarmaActiva = false;
+  // Recorrer los pines de entrada
+  for (int i = 2; i <= 9; i++) {
+    // Si un sensor detecta movimiento
+    if (digitalRead(i) == HIGH) {
+      // Activar la alarma
+      alarmaActiva = true;
+      // Salir del ciclo
+      break;
+    }
+  }
+  // Si la alarma esta activa
+  if (alarmaActiva) {
+    // Encender la sirena
+    activarSirena();
+  } else {
+    // Apagar la sirena
+    desactivarSirena();
+  }
+}
+
+// Funcion para encender la sirena
+void activarSirena() {
+  digitalWrite(13, HIGH);
+}
+
+// Funcion para apagar la sirena
+void desactivarSirena() {
+  digitalWrite(13, LOW);
+}
+
+// Funcion principal
+void loop() {
+  // Llamar a la funcion de inicializar pines
+  inicializarPines();
+  // Bucle principal
+  while (true) {
+    // Llamar a la funcion de revisar sensores
+    revisarSensores();
+    // Esperar un segundo
+    delay(1000);
+  }
+}
